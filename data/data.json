@@ -1,0 +1,169 @@
+{
+  "Menu-Item" : {
+    "Pizza" : 10,
+    "Hamburger" : 10,
+    "Sushi" : 10,
+    "Stake" : 10,
+    "Pasta" : 10,
+    "Fish & Chips" : 10,
+    "Salad" : 10,
+    "Fish Fillet" : 10,
+    "Tofu Stake" : 10,
+    "Fried Vegetables" : 10,
+    "Baked Vegetables" : 10,
+    "Chicken Stake" : 10,
+    "Pork Chop" : 10
+  },
+  "Ingredient" : {
+    "Pizza" : [
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Fresh Tomato",
+      "Fresh Onion",
+      "Olive Oil"
+    ],
+    "Hamburger" : [
+      "Cheddar Cheese",
+      "Pickles",
+      "Fresh Tomato",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "French Fries",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Sushi" : [
+      "Pickles",
+      "Fresh Cucumber",
+      "Soy Sauce",
+      "Rice",
+      "Small Salad",
+      "Thai Mayonnaise Sauce",
+      "Teriyaki",
+      "Wasabi"
+    ],
+    "Stake" : [
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Pickles",
+      "Rice",
+      "French Fries",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Pasta" : [
+      "Mozzarella Cheese",
+      "Fresh Tomato",
+      "Olive Oil",
+      "Small Salad"
+    ],
+    "Fish & Chips" : [
+      "Mozzarella Cheese",
+      "Pickles",
+      "Fresh Tomato",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "Olive Oil",
+      "Rice",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce"
+    ],
+    "Salad" : [
+      "Fresh Tomato",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "Olive Oil",
+      "Soy Sauce",
+      "Rice",
+      "Baked Potatoes"
+    ],
+    "Fish Fillet" : [
+      "Tomato Sauce",
+      "Cheddar Cheese",
+      "Mozzarella Cheese",
+      "Fresh Onion",
+      "Olive Oil",
+      "Soy Sauce",
+      "Rice",
+      "French Fries",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Tofu Stake" : [
+      "Tomato Sauce",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "Olive Oil",
+      "French Fries",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Fried Vegetables" : [
+      "Cheddar Cheese",
+      "Pickles",
+      "Fresh Tomato",
+      "Olive Oil",
+      "Soy Sauce",
+      "Rice",
+      "French Fries",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Baked Vegetables" : [
+      "Tomato Sauce",
+      "Cheddar Cheese",
+      "Mozzarella Cheese",
+      "Pickles",
+      "Fresh Onion",
+      "Olive Oil",
+      "Soy Sauce",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Chicken Stake" : [
+      "Tomato Sauce",
+      "Cheddar Cheese",
+      "Mozzarella Cheese",
+      "Pickles",
+      "Fresh Tomato",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "Olive Oil",
+      "Soy Sauce",
+      "Rice",
+      "French Fries",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ],
+    "Pork Chop" : [
+      "Tomato Sauce",
+      "Cheddar Cheese",
+      "Mozzarella Cheese",
+      "Pickles",
+      "Fresh Tomato",
+      "Fresh Cucumber",
+      "Fresh Onion",
+      "Olive Oil",
+      "Soy Sauce",
+      "Rice",
+      "French Fries",
+      "Small Salad",
+      "Mayonnaise Sauce",
+      "Home Made Barbecue Sauce",
+      "Baked Potatoes"
+    ]
+  },
+  "And" : ["And"]
+}
