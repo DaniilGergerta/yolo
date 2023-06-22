@@ -1,0 +1,16 @@
+.nameplate-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1.5em;
+
+  img {
+    width: 4em;
+  }
+
+  span {
+    font-size: 1.25em;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+  }
+}
