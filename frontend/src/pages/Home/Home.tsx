@@ -3,7 +3,7 @@ import Nameplate from "../../components/Nameplate";
 import "./styles.scss";
 import SearchResult from "../../components/SearchResult";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
-import { IOrderItem, TOrderType } from "../../common/types";
+import { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
 
 const initOrderList: IOrderItem = {
   id: 0,
@@ -15,7 +15,9 @@ const Home = () => {
   const [orderList, setOrderList] = useState<IOrderItem[]>([initOrderList]);
   const [input, setInput] = useState<string>("");
   const [searchResult, setSearchResult] = useState<string[]>([]);
+  const [prices, setPrices] = useState<IMenuItem[] | null>(null);
   const [resultType, setResultType] = useState<TOrderType>("menu-item");
+  const [isOrderFull, setIsOrderFull] = useState(false);
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -24,11 +26,21 @@ const Home = () => {
   const handleRemoveLastOrderItem = useCallback(() => {
     setOrderList((prevState): IOrderItem[] => {
       if (prevState.length > 1) {
+        prevState[prevState.length - 1].type === 'menu-item'
+          ? setResultType("menu-item")
+          : setResultType("ingredient")
+        
         return prevState.slice(0, -1);
       }
+      setResultType("menu-item")
       return [initOrderList];
     });
   }, [orderList]);
+
+  const handleRemoveAllOrders = useCallback(() => {
+    setOrderList([initOrderList]);
+    setResultType("menu-item");
+  }, []);
 
   const handleItemSelected = useCallback(
     (item: string) => {
@@ -60,6 +72,7 @@ const Home = () => {
 
   const handleNewMenuItem = useCallback(() => {
     setInput("");
+    console.log(orderList);
     setOrderList((prevState): IOrderItem[] => [
       ...prevState,
       {
@@ -74,9 +87,18 @@ const Home = () => {
     setResultType("menu-item");
   }, []);
 
+  const handleGetReceipt = useCallback((finalOrder: IOrderItem[]) => {
+    setIsOrderFull(true)
+    console.log(finalOrder);
+  }, []);
+
   useEffect(() => {
     if (resultType === "menu-item") {
-      fetchData<string[]>("/menuitems", setError).then((data) => setSearchResult(data));
+      fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
+        console.log(Object.values(data));
+        setSearchResult(Object.keys(data))
+        setPrices(Object.values(data));
+      });
     }
     if (resultType === "ingredient") {
       fetchData<string[]>(`/ingredients/${lastElement(orderList).menuItem}`, setError).then(
@@ -93,12 +115,17 @@ const Home = () => {
         <section className="home-wrapper__container">
           <Nameplate />
           <SearchBar
+            isOrderFull={isOrderFull}
             orderList={orderList}
             onChange={handleInputChange}
+            removeAllOrders={handleRemoveAllOrders}
             removeLastOrderItem={handleRemoveLastOrderItem}
+            onBuy={handleGetReceipt}
             value={input}
           />
           <SearchResult
+            orderList={orderList}
+            isOrderFull={isOrderFull}
             resultType={resultType}
             results={filterData(searchResult, input)}
             onSelected={handleItemSelected}

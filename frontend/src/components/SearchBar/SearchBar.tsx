@@ -15,11 +15,22 @@ import Item from "../Item";
 interface Props {
   orderList: IOrderItem[];
   onChange: ChangeEventHandler<HTMLInputElement>;
+  removeAllOrders: () => void;
   removeLastOrderItem: () => void;
   value: string;
+  onBuy: (orderList: IOrderItem[]) => void;
+  isOrderFull: boolean
 }
 
-const SearchBar: FC<Props> = ({ orderList, onChange, removeLastOrderItem, value }) => {
+const SearchBar: FC<Props> = ({
+  orderList,
+  onChange,
+  removeAllOrders,
+  removeLastOrderItem,
+  value,
+  onBuy,
+  isOrderFull
+}) => {
   const [input, setInput] = useState<string>("");
 
   const handleKeyDown = useCallback(
@@ -40,25 +51,56 @@ const SearchBar: FC<Props> = ({ orderList, onChange, removeLastOrderItem, value 
     setInput(value);
   }, [value]);
 
+  console.log(orderList);
+
   return (
     <div className="searchbar-wrapper">
       <section className="searchbar-wrapper__container">
-        <div className="searchbar-wrapper__container--orderlist">
-          {orderList.map((orderItem) => (
-            <Item
-              key={orderItem.id}
-              type={orderItem.type}
-              selected={orderItem.ingredient ?? orderItem.menuItem}
-              showIcon={!!orderItem.menuItem}
-            />
-          ))}
-        </div>
-        <div className="searchbar-wrapper__container--search-container">
-          <input type="text" onChange={handleInputChange} onKeyDown={handleKeyDown} value={value} />
-          <button className="searchbar-wrapper__container--search-container--button">
-            <CloseIcon />
-          </button>
-        </div>
+        {isOrderFull ? (
+          <p
+            className="searchbar-wrapper__container--text"
+          >
+            Reciept
+          </p>
+        ) : (
+          <>
+            <div className="searchbar-wrapper__container--orderlist">
+              {orderList.map((orderItem) => (
+                <Item
+                  key={orderItem.id}
+                  type={orderItem.type}
+                  selected={orderItem.ingredient ?? orderItem.menuItem}
+                  showIcon={!!orderItem.menuItem}
+                />
+              ))}
+            </div>
+            <div className="searchbar-wrapper__container--search-container">
+              <input
+                type="text"
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                value={value}
+              />
+              {
+                orderList[0].menuItem && (
+                  <button
+                    className="searchbar-wrapper__container--search-container--button--text"
+                    onClick={() => onBuy(orderList)}
+                  >
+                    buy
+                  </button>
+                )
+              }
+              <button
+                className="searchbar-wrapper__container--search-container--button"
+                onClick={removeAllOrders}
+              >
+                <CloseIcon />
+              </button>
+            </div>
+          </>
+        )}
+
       </section>
     </div>
   );

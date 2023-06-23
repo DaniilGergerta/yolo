@@ -5,4 +5,14 @@ export interface IOrderItem {
   ingredient?: string;
 }
 
+export interface IMenuItem {
+  value: number;
+}
+
+export interface IReceipt {
+  id: number;
+  name: string;
+  price: number;
+}
+
 export type TOrderType = "menu-item" | "ingredient" | "and";

@@ -9,8 +9,8 @@ export class AppController {
   }
 
   @Get('menuitems')
-  getMenuItems(): string[] {
-    return Object.keys(DATA['Menu-Item']);
+  getMenuItems() {
+    return DATA['Menu-Item'];
   }
 
   @Get('ingredients/:menuItem')

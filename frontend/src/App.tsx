@@ -1,4 +1,3 @@
-import React from "react";
 import "./styles/colors.scss";
 import "./styles/styles.scss";
 import Home from "./pages/Home";

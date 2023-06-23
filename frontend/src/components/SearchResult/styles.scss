@@ -31,3 +31,13 @@
     }
   }
 }
+
+.order {
+  margin-left: 2.25em;
+
+  &__text {
+    &--bold {
+      font-weight: 600;
+    }
+  }
+}
