@@ -7,7 +7,7 @@ const Home = () => {
     <div className="home-wrapper">
       <section className="home-wrapper__container">
         <Nameplate />
-        <SearchBar />
+        <SearchBar orderList={[]} />
       </section>
     </div>
   );

@@ -1,0 +1,15 @@
+.results-wrapper {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1em;
+  border-radius: 0.2em;
+  background-color: white;
+  box-shadow: #A9A9A9 0 4px 8px 0;
+  gap: 1em;
+
+  &--item {
+    display: inline-block;
+  }
+}

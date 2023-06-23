@@ -4,13 +4,14 @@ import { FC } from "react";
 
 interface Props {
   variant: "menu-item" | "ingredient" | "and";
+  selected?: string;
 }
 
-const Item: FC<Props> = ({ variant }) => {
+const Item: FC<Props> = ({ variant, selected }) => {
   return (
     <div className={`item-wrapper ${variant}`}>
       <span className="item-wrapper__text">{variant}</span>
-      <DotCircle />
+      {selected ? selected : <DotCircle />}
     </div>
   );
 };
