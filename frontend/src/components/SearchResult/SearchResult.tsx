@@ -30,7 +30,7 @@ const SearchResult: FC<Props> = ({ results, resultType, onSelected, newMenuItem 
           onClick={() => onSelected(item)}
           onKeyDown={(e) => handleItemSelect(e, item)}
         >
-          {item}
+          <Item type={resultType} selected={item} />
         </div>
       ))}
       {resultType == "ingredient" && (

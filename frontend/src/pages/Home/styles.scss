@@ -1,3 +1,5 @@
+@import "styles/media";
+
 .home-wrapper {
   display: flex;
   align-items: center;
@@ -5,9 +7,16 @@
   justify-content: space-around;
   margin-top: 20vh;
 
+  @include mobile {
+    margin-top: 0;
+    padding: 2em;
+  }
+
   &__container {
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    max-width: 900px;
   }
 }

@@ -1,9 +1,15 @@
+@import "styles/media";
+
 .nameplate-wrapper {
   display: flex;
   align-items: center;
   flex-direction: row;
   margin-bottom: 2em;
   gap: 1.5em;
+
+  @include mobile {
+    display: none;
+  }
 
   img {
     width: 4em;

@@ -1,3 +1,5 @@
+@import "styles/media";
+
 .results-wrapper {
   display: flex;
   flex-direction: column;
@@ -15,9 +17,17 @@
     padding: 0.5em 1em;
     transition: background-color 100ms;
 
-    &:hover, &:focus-visible {
-      outline: none;
-      background-color: #EEEEEE;
+    @include desktop {
+      &:hover, &:focus-visible {
+        outline: none;
+        background-color: #EEEEEE;
+      }
+    }
+
+    @include mobile {
+      &:not(.and):active {
+        background-color: #A9A9A9;
+      }
     }
   }
 }
