@@ -3,7 +3,8 @@
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  padding: 1em;
+  margin: 0.5rem 0;
+  transition: height 100ms;
   border-radius: 0.2em;
   background-color: white;
   box-shadow: #A9A9A9 0 4px 8px 0;
@@ -11,5 +12,6 @@
 
   &--item {
     display: inline-block;
+    margin: 0.5rem 0;
   }
 }

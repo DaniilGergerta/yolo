@@ -12,7 +12,7 @@ const SearchBar: FC<Props> = ({ orderList }) => {
       <section className="searchbar-wrapper__container">
         <div className="searchbar-wrapper__container--query">{orderList}</div>
         <div className="searchbar-wrapper__container--search-container">
-          <input type="search" />
+          <input type="text" />
           <button className="searchbar-wrapper__container--search-container--button">
             <CloseIcon />
           </button>
