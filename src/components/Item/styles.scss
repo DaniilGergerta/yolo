@@ -1,0 +1,54 @@
+@import "styles/colors";
+
+.item-wrapper {
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 0.2em 0.3em;
+  list-style-type: none;
+  border-radius: 0.3em;
+  gap: 0.3em;
+
+  &__text {
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+
+  &.menu-item {
+    text-transform: capitalize;
+    color: $--color--menuitem-dark;
+    border: $--color--menuitem-dark 1px solid;
+    background-color: $--color--menuitem-light;
+
+    & > svg > path {
+      fill: $--color--menuitem-dark;
+    }
+  }
+
+  &.ingredient {
+    text-transform: capitalize;
+    color: $--color--ingredient-dark;
+    border: $--color--ingredient-dark 1px solid;
+    background-color: $--color--ingredient-light;
+
+    & > svg > path {
+      fill: $--color--ingredient-dark;
+    }
+  }
+
+  &.and {
+    text-transform: uppercase;
+    color: $--color--and-dark;
+    border: $--color--and-dark 1px solid;
+    background-color: $--color--and-light;
+
+    & > svg > path {
+      fill: $--color--and-dark;
+    }
+  }
+
+  & > svg {
+    width: 0.8em;
+    height: 0.8em;
+  }
+}

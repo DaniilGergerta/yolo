@@ -1,5 +1,5 @@
 import "./styles.scss";
-import logo from "../../assets/imgs/logo.png";
+import logo from "../../assets/images/logo.png";
 
 const Header = () => (
   <header className="header-wrapper">
