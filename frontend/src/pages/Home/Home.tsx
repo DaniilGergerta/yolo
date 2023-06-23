@@ -4,13 +4,15 @@ import "./styles.scss";
 import SearchResult from "../../components/SearchResult";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
+import { useAppDispatch } from "store";
+import { setProducts } from "store/reducers/products";
 
 const initOrderList: IOrderItem = {
   id: 0,
   type: "menu-item"
 };
 
-const Home = () => {
+export const Home = () => {
   const [isError, setError] = useState<boolean>(false);
   const [orderList, setOrderList] = useState<IOrderItem[]>([initOrderList]);
   const [input, setInput] = useState<string>("");
@@ -19,6 +21,7 @@ const Home = () => {
   const [prices, setPrices] = useState<IMenuItem[] | null>(null);
   const [resultType, setResultType] = useState<TOrderType>("menu-item");
   const [isOrderFull, setIsOrderFull] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -109,6 +112,10 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
+    dispatch(setProducts(orderList))
+  }, [orderList]);
+
+  useEffect(() => {
     if (resultType === "menu-item") {
       fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
         console.log(Object.values(data));
@@ -161,8 +168,6 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;
 
 const fetchData = async <T,>(
   endpoint: string,

@@ -1,0 +1,32 @@
+.order-wrapper {
+  margin-top: 20vh;
+  width: 100%;
+  max-width: 900px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+  transition: height 100ms;
+  border-radius: 0.2em;
+  background-color: white;
+  box-shadow: #A9A9A9 0 4px 8px 0;
+
+  @include mobile {
+    margin-top: 0;
+    padding: 2em;
+  }
+}
+
+.order {
+  margin-left: 2.25em;
+
+  &__text {
+    &--bold {
+      font-weight: 600;
+    }
+  }
+}

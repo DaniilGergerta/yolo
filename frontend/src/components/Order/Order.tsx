@@ -1,17 +1,16 @@
 import { IOrderItem, IReceipt } from "common/types";
 import { FC, useEffect, useState } from "react";
+import { useAppSelector } from "store";
+import './styles.scss'
 
-interface Props {
-  orderList: IOrderItem[];
-}
-
-const Order: FC<Props> = ({ orderList }) => {
+const Order: FC = () => {
+  const { products: orderList } = useAppSelector(store => store.products)
   const initialPrice = 10;
   const [receipt, setReceipt] = useState<IReceipt[] | null>(null);
   const [total, setTotal] = useState<number>(0);
   useEffect(() => {
     const getOrder = () => {
-      const receipt:IReceipt[] = [];
+      const receipt: IReceipt[] = [];
       orderList.forEach(orderItem =>
         orderItem.type === 'menu-item' ? receipt.push({
           id: receipt.length + 1,
@@ -30,13 +29,17 @@ const Order: FC<Props> = ({ orderList }) => {
     getOrder();
   }, [])
   return (
-    <div className="order">
-      <p className="order__text--bold">Order:</p>
-      {receipt && receipt.map(order => (
-        <p key={order.id}>{`${order.name} - ${order.price}NIS`}</p>
-      ))}
-      <p className="order__text--bold">{`Total: ${total}NIS`}</p>
-    </div>
+    <section
+      className="order-wrapper"
+    >
+      <div className="order">
+        <p className="order__text--bold">Order:</p>
+        {receipt && receipt.map(order => (
+          <p key={order.id}>{`${order.name} - ${order.price}NIS`}</p>
+        ))}
+        <p className="order__text--bold">{`Total: ${total}NIS`}</p>
+      </div>
+    </section>
   );
 }
 

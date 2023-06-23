@@ -1,14 +1,21 @@
 import "./styles/colors.scss";
 import "./styles/styles.scss";
-import Home from "./pages/Home";
-import Header from "./components/Header";
+import { Home } from "./pages/Home";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import RootLayout from "components/RootLayout";
+import Order from "components/Order";
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <Home />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RootLayout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/receipte" element={<Order />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 

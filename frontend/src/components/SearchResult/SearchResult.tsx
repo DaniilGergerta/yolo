@@ -34,45 +34,37 @@ const SearchResult: FC<Props> = ({
     <section
       className="results-wrapper"
     >
-      {isOrderFull
-        ? (
-          <Order orderList={orderList} />
-        ) : (
-          <>
-            {results.map((item, index) => (
-              <div
-                key={index}
-                className="results-wrapper--item"
-                tabIndex={0}
-                onClick={() => onSelected(item)}
-                onKeyDown={(e) => handleItemSelect(e, item)}
-              >
-                <Item
-                  type={resultType}
-                  selected={item}
-                />
-              </div>
-            ))}
-            {resultType == "ingredient" && (
-              <div
-                className="results-wrapper--item"
-                tabIndex={0}
-                onClick={() => newMenuItem()}
-                onKeyDown={(e) => handleItemSelect(e, undefined)}
-              >
-                <Item
-                  type={"and"}
-                  isWithColor={true}
-                  isOnList={true}
-                />
-              </div>
-            )}
-            {!results.length && resultType != "ingredient" && (
-              <div className="results-wrapper--no-results">No Results Found</div>
-            )}
-          </>
-        )}
-
+      {results.map((item, index) => (
+        <div
+          key={index}
+          className="results-wrapper--item"
+          tabIndex={0}
+          onClick={() => onSelected(item)}
+          onKeyDown={(e) => handleItemSelect(e, item)}
+        >
+          <Item
+            type={resultType}
+            selected={item}
+          />
+        </div>
+      ))}
+      {resultType == "ingredient" && (
+        <div
+          className="results-wrapper--item"
+          tabIndex={0}
+          onClick={() => newMenuItem()}
+          onKeyDown={(e) => handleItemSelect(e, undefined)}
+        >
+          <Item
+            type={"and"}
+            isWithColor={true}
+            isOnList={true}
+          />
+        </div>
+      )}
+      {!results.length && resultType != "ingredient" && (
+        <div className="results-wrapper--no-results">No Results Found</div>
+      )}
     </section>
   );
 };

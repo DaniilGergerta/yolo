@@ -55,8 +55,6 @@ const SearchBar: FC<Props> = ({
     setInput(value);
   }, [value]);
 
-  console.log(orderList);
-
   return (
     <div
       className="searchbar-wrapper"
