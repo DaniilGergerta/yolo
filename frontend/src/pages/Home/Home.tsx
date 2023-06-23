@@ -112,10 +112,6 @@ export const Home = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(setProducts(orderList))
-  }, [orderList]);
-
-  useEffect(() => {
     if (resultType === "menu-item") {
       fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
         console.log(Object.values(data));

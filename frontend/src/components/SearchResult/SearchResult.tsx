@@ -1,8 +1,10 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 import "./styles.scss";
 import Item from "../Item";
 import { IOrderItem, IReceipt, TOrderType } from "../../common/types";
 import Order from "components/Order";
+import { useAppDispatch, useAppSelector } from "store";
+import { setProducts } from "store/reducers/products";
 
 interface Props {
   orderList: IOrderItem[];
@@ -21,6 +23,8 @@ const SearchResult: FC<Props> = ({
   newMenuItem,
   isOrderFull,
 }) => {
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector(s => s.products)
   const handleItemSelect = useCallback(
     (e: React.KeyboardEvent, item: string) => {
       if (e.key == "Enter" || e.key == "Space") {
@@ -29,6 +33,12 @@ const SearchResult: FC<Props> = ({
     },
     [resultType]
   );
+
+  useEffect(() => {
+    dispatch(setProducts(orderList))
+  }, [orderList]);
+
+  console.log('PRODUCTS', products);
 
   return (
     <section

@@ -14,11 +14,6 @@
   border-radius: 0.2em;
   background-color: white;
   box-shadow: #A9A9A9 0 4px 8px 0;
-
-  @include mobile {
-    margin-top: 0;
-    padding: 2em;
-  }
 }
 
 .order {
