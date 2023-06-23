@@ -11,13 +11,15 @@
     border: #CB91B1 solid 0.2em;
     border-radius: 0.25em;
     background-color: white;
+    gap: 0.5em;
 
-    &--query {
+    &--orderlist {
       display: flex;
       align-items: center;
       flex-direction: row;
+      max-width: 60%;
       padding-left: 0.5em;
-      gap: 0.5em
+      gap: 0.5em;
     }
 
     &--search-container {
