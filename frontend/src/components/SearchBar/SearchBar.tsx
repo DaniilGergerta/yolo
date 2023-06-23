@@ -1,5 +1,13 @@
 import "./styles.scss";
-import { ChangeEventHandler, FC, KeyboardEvent, useCallback } from "react";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  FC,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useState
+} from "react";
 import CloseIcon from "../../assets/svgs/CloseIcon";
 import { IOrderItem } from "../../common/types";
 import Item from "../Item";
@@ -8,14 +16,29 @@ interface Props {
   orderList: IOrderItem[];
   onChange: ChangeEventHandler<HTMLInputElement>;
   removeLastOrderItem: () => void;
+  value: string;
 }
 
-const SearchBar: FC<Props> = ({ orderList, onChange, removeLastOrderItem }) => {
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key == "Backspace" && orderList.length > 1) {
-      removeLastOrderItem();
-    }
+const SearchBar: FC<Props> = ({ orderList, onChange, removeLastOrderItem, value }) => {
+  const [input, setInput] = useState<string>("");
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Backspace" && input.length === 0) {
+        removeLastOrderItem();
+      }
+    },
+    [input]
+  );
+
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+    onChange(e);
   }, []);
+
+  useEffect(() => {
+    setInput(value);
+  }, [value]);
 
   return (
     <div className="searchbar-wrapper">
@@ -31,7 +54,7 @@ const SearchBar: FC<Props> = ({ orderList, onChange, removeLastOrderItem }) => {
           ))}
         </div>
         <div className="searchbar-wrapper__container--search-container">
-          <input type="text" onChange={onChange} onKeyDown={handleKeyDown} />
+          <input type="text" onChange={handleInputChange} onKeyDown={handleKeyDown} value={value} />
           <button className="searchbar-wrapper__container--search-container--button">
             <CloseIcon />
           </button>

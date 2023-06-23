@@ -1,3 +1,5 @@
+@import "styles/media";
+
 .searchbar-wrapper {
   display: flex;
   flex-direction: column;
@@ -13,13 +15,37 @@
     background-color: white;
     gap: 0.5em;
 
+    @include mobile {
+      width: 100%;
+    }
+
     &--orderlist {
       display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
       align-items: center;
-      flex-direction: row;
+      justify-content: flex-end;
       max-width: 60%;
+      margin-bottom: 0.1em;
       padding-left: 0.5em;
+      white-space: nowrap;
       gap: 0.5em;
+
+      &::-webkit-scrollbar {
+        height: 0.25em;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #c5c5c5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
     }
 
     &--search-container {

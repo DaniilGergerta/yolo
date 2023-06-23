@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, useCallback } from "react";
+import React, { FC, useCallback } from "react";
 import "./styles.scss";
 import Item from "../Item";
 import { TOrderType } from "../../common/types";
@@ -7,14 +7,14 @@ interface Props {
   results: string[];
   resultType: TOrderType;
   onSelected: (item: string) => void;
-  onNewMenuItem: () => void;
+  newMenuItem: () => void;
 }
 
-const SearchResult: FC<Props> = ({ results, resultType, onSelected, onNewMenuItem }) => {
-  const keyDownHandler = useCallback(
-    (e: KeyboardEvent, item: string) => {
+const SearchResult: FC<Props> = ({ results, resultType, onSelected, newMenuItem }) => {
+  const handleItemSelect = useCallback(
+    (e: React.KeyboardEvent, item: string) => {
       if (e.key == "Enter" || e.key == "Space") {
-        onSelected(item);
+        item ? onSelected(item) : newMenuItem;
       }
     },
     [resultType]
@@ -22,40 +22,30 @@ const SearchResult: FC<Props> = ({ results, resultType, onSelected, onNewMenuIte
 
   return (
     <section className="results-wrapper">
-      {resultType == "and"
-        ? results.map((item: string) => (
-            <div
-              key={item}
-              className="results-wrapper--item"
-              tabIndex={0}
-              onClick={() => onSelected(item)}
-              onKeyDown={(e) => keyDownHandler(e, item)}
-            >
-              <Item type={item.toLowerCase() as TOrderType} />
-            </div>
-          ))
-        : results.map((item, i) => (
-            <div
-              key={item}
-              className="results-wrapper--item"
-              tabIndex={i}
-              onClick={() => onSelected(item)}
-              onKeyDown={(e) => keyDownHandler(e, item)}
-            >
-              {item}
-            </div>
-          ))}
+      {results.map((item, i) => (
+        <div
+          key={i}
+          className="results-wrapper--item"
+          tabIndex={0}
+          onClick={() => onSelected(item)}
+          onKeyDown={(e) => handleItemSelect(e, item)}
+        >
+          {item}
+        </div>
+      ))}
       {resultType == "ingredient" && (
         <div
           className="results-wrapper--item"
           tabIndex={0}
-          onClick={() => onNewMenuItem()}
-          onKeyDown={(e) => keyDownHandler(e, "and")}
+          onClick={() => newMenuItem()}
+          onKeyDown={(e) => handleItemSelect(e, undefined)}
         >
           <Item type={"and"} />
         </div>
       )}
-      {!results.length && <div className="results-wrapper--no-results">No Results Found</div>}
+      {!results.length && resultType != "ingredient" && (
+        <div className="results-wrapper--no-results">No Results Found</div>
+      )}
     </section>
   );
 };

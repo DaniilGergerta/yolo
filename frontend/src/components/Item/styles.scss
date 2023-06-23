@@ -1,10 +1,9 @@
 @import "styles/colors";
 
 .item-wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-direction: row;
-  width: fit-content;
   padding: 0.2em 0.3em;
   list-style-type: none;
   border-radius: 0.3em;
@@ -13,6 +12,7 @@
   &__text {
     font-size: 0.8em;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   &.menu-item {

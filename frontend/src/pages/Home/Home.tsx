@@ -22,7 +22,7 @@ const Home = () => {
   }, []);
 
   const handleRemoveLastOrderItem = useCallback(() => {
-    setOrderList((prevState) => {
+    setOrderList((prevState): IOrderItem[] => {
       if (prevState.length > 1) {
         return prevState.slice(0, -1);
       }
@@ -30,7 +30,7 @@ const Home = () => {
     });
   }, [orderList]);
 
-  const handleInputEntered = useCallback(
+  const handleItemSelected = useCallback(
     (item: string) => {
       setInput("");
       if (resultType === "menu-item") {
@@ -55,10 +55,11 @@ const Home = () => {
         ]);
       }
     },
-    [resultType]
+    [resultType, input]
   );
 
   const handleNewMenuItem = useCallback(() => {
+    setInput("");
     setOrderList((prevState): IOrderItem[] => [
       ...prevState,
       {
@@ -95,12 +96,13 @@ const Home = () => {
             orderList={orderList}
             onChange={handleInputChange}
             removeLastOrderItem={handleRemoveLastOrderItem}
+            value={input}
           />
           <SearchResult
             resultType={resultType}
             results={filterData(searchResult, input)}
-            onSelected={handleInputEntered}
-            onNewMenuItem={handleNewMenuItem}
+            onSelected={handleItemSelected}
+            newMenuItem={handleNewMenuItem}
           />
         </section>
       )}
