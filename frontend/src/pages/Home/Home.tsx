@@ -14,6 +14,7 @@ const Home = () => {
   const [isError, setError] = useState<boolean>(false);
   const [orderList, setOrderList] = useState<IOrderItem[]>([initOrderList]);
   const [input, setInput] = useState<string>("");
+  const [isListOpen, setIsListOpen] = useState(true);
   const [searchResult, setSearchResult] = useState<string[]>([]);
   const [prices, setPrices] = useState<IMenuItem[] | null>(null);
   const [resultType, setResultType] = useState<TOrderType>("menu-item");
@@ -29,7 +30,7 @@ const Home = () => {
         prevState[prevState.length - 1].type === 'menu-item'
           ? setResultType("menu-item")
           : setResultType("ingredient")
-        
+
         return prevState.slice(0, -1);
       }
       setResultType("menu-item")
@@ -92,6 +93,21 @@ const Home = () => {
     console.log(finalOrder);
   }, []);
 
+  const handleRemoveOneOnClick = useCallback((id: number) => {
+    setOrderList(prev => {
+      if (prev.length > 1) {
+        return prev.filter(product => product.id !== id)
+      }
+
+      setResultType("menu-item")
+      return [initOrderList];
+    });
+  }, [])
+
+  const handleOnFocus = useCallback((value: boolean) => {
+    setIsListOpen(value)
+  }, [])
+
   useEffect(() => {
     if (resultType === "menu-item") {
       fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
@@ -115,6 +131,8 @@ const Home = () => {
         <section className="home-wrapper__container">
           <Nameplate />
           <SearchBar
+            onRemoveOne={handleRemoveOneOnClick}
+            onFocus={handleOnFocus}
             isOrderFull={isOrderFull}
             orderList={orderList}
             onChange={handleInputChange}
@@ -123,16 +141,23 @@ const Home = () => {
             onBuy={handleGetReceipt}
             value={input}
           />
-          <SearchResult
-            orderList={orderList}
-            isOrderFull={isOrderFull}
-            resultType={resultType}
-            results={filterData(searchResult, input)}
-            onSelected={handleItemSelected}
-            newMenuItem={handleNewMenuItem}
-          />
+          {isListOpen && (
+            <SearchResult
+              orderList={orderList}
+              isOrderFull={isOrderFull}
+              resultType={resultType}
+              results={filterData(searchResult, input)}
+              onSelected={handleItemSelected}
+              newMenuItem={handleNewMenuItem}
+            />
+          )}
         </section>
       )}
+      <div
+        className="home-wrapper__background"
+        onClick={() => handleOnFocus(false)}
+      >
+      </div>
     </div>
   );
 };

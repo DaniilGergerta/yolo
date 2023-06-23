@@ -7,15 +7,37 @@ interface Props {
   type: TOrderType | string;
   selected?: string;
   showIcon?: boolean;
+  isWithColor?: boolean
+  id?: number
+  isOnList?: boolean
+  onRemoveOne?: (id: number) => void;
 }
 
-const Item: FC<Props> = ({ type, selected, showIcon = true }) => {
+const Item: FC<Props> = ({
+  type,
+  selected,
+  showIcon = true,
+  isOnList=false,
+  isWithColor,
+  id,
+  onRemoveOne,
+}) => {
+  const isAnd = type === 'and';
   return (
-    <div className={`item-wrapper ${type ? type : selected.toLocaleLowerCase()}`}>
+    <div
+      className={`item-wrapper ${isWithColor && type}`}
+    >
       <span className="item-wrapper__text">
-        {(selected && type) ? `${type.substring(0, 1)} / ${selected}` : selected ? `${selected}` : type}
+        {(selected && type && isWithColor) ? `${type.substring(0, 1)} / ${selected}` : selected ? `${selected}` : type}
       </span>
-      {showIcon && <DotCircle />}
+      {((showIcon || isAnd) && isWithColor && !isOnList) && (
+        <div
+          onClick={() => onRemoveOne(id)}
+          className="item-wrapper__btn"
+        >
+          <DotCircle />
+        </div>
+      )}
     </div>
   );
 };

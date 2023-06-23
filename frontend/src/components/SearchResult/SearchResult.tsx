@@ -31,7 +31,9 @@ const SearchResult: FC<Props> = ({
   );
 
   return (
-    <section className="results-wrapper">
+    <section
+      className="results-wrapper"
+    >
       {isOrderFull
         ? (
           <Order orderList={orderList} />
@@ -45,7 +47,10 @@ const SearchResult: FC<Props> = ({
                 onClick={() => onSelected(item)}
                 onKeyDown={(e) => handleItemSelect(e, item)}
               >
-                <Item type={resultType} selected={item} />
+                <Item
+                  type={resultType}
+                  selected={item}
+                />
               </div>
             ))}
             {resultType == "ingredient" && (
@@ -55,7 +60,11 @@ const SearchResult: FC<Props> = ({
                 onClick={() => newMenuItem()}
                 onKeyDown={(e) => handleItemSelect(e, undefined)}
               >
-                <Item type={"and"} />
+                <Item
+                  type={"and"}
+                  isWithColor={true}
+                  isOnList={true}
+                />
               </div>
             )}
             {!results.length && resultType != "ingredient" && (

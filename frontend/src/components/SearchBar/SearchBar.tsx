@@ -20,6 +20,8 @@ interface Props {
   value: string;
   onBuy: (orderList: IOrderItem[]) => void;
   isOrderFull: boolean
+  onFocus: (value: boolean) => void;
+  onRemoveOne: (id: number) => void;
 }
 
 const SearchBar: FC<Props> = ({
@@ -29,7 +31,9 @@ const SearchBar: FC<Props> = ({
   removeLastOrderItem,
   value,
   onBuy,
-  isOrderFull
+  isOrderFull,
+  onFocus,
+  onRemoveOne,
 }) => {
   const [input, setInput] = useState<string>("");
 
@@ -54,7 +58,11 @@ const SearchBar: FC<Props> = ({
   console.log(orderList);
 
   return (
-    <div className="searchbar-wrapper">
+    <div
+      className="searchbar-wrapper"
+      onFocus={() => onFocus(true)}
+      autoFocus
+    >
       <section className="searchbar-wrapper__container">
         {isOrderFull ? (
           <p
@@ -68,9 +76,12 @@ const SearchBar: FC<Props> = ({
               {orderList.map((orderItem) => (
                 <Item
                   key={orderItem.id}
+                  id={orderItem.id}
                   type={orderItem.type}
                   selected={orderItem.ingredient ?? orderItem.menuItem}
                   showIcon={!!orderItem.menuItem}
+                  isWithColor={true}
+                  onRemoveOne={onRemoveOne}
                 />
               ))}
             </div>
