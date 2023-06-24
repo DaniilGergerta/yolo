@@ -1,10 +1,11 @@
 import SearchBar from "../../components/SearchBar";
 import Nameplate from "../../components/Nameplate";
 import "./styles.scss";
-import SearchResult from "../../components/SearchResult";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
 import { useAppDispatch } from "store";
+import SearchResult from "../../components/SearchResult";
+import Reciept from "../../components/Reciept";
 
 export const Home = () => {
   const [isError, setError] = useState<boolean>(false);
@@ -12,9 +13,8 @@ export const Home = () => {
   const [input, setInput] = useState<string>("");
   const [isListOpen, setIsListOpen] = useState(true);
   const [searchResult, setSearchResult] = useState<string[]>([]);
-  const [prices, setPrices] = useState<IMenuItem[] | null>(null);
+  const [prices, setPrices] = useState<number[]>([]);
   const [resultType, setResultType] = useState<TOrderType>("and");
-  const [isOrderFull, setIsOrderFull] = useState(false);
   const dispatch = useAppDispatch();
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ export const Home = () => {
 
   const handleRemoveAllOrders = useCallback(() => {
     setOrderList([]);
-    setResultType("and");
+    setResultType(undefined);
   }, []);
 
   const handleItemSelected = useCallback(
@@ -84,9 +84,9 @@ export const Home = () => {
     setInput("");
   }, []);
 
-  const handleGetReceipt = useCallback((finalOrder: IOrderItem[]) => {
+  const handleGetReceipt = useCallback(() => {
     setSearchResult([]);
-    setIsOrderFull(true);
+    setResultType(undefined);
   }, []);
 
   const handleRemoveOneOnClick = useCallback((id: number) => {
@@ -99,18 +99,13 @@ export const Home = () => {
     });
   }, []);
 
-  const handleOnFocus = useCallback(
-    (value: boolean) => {
-      if (!isOrderFull) {
-        setIsListOpen(value);
-      }
-    },
-    [isOrderFull]
-  );
+  const handleBackgroundFocus = useCallback((value: boolean) => {
+    setIsListOpen(value);
+  }, []);
 
   useEffect(() => {
     if (resultType === "menu-item") {
-      fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
+      fetchData<IMenuItem>("/menuitems", setError).then((data) => {
         setSearchResult(Object.keys(data));
         setPrices(Object.values(data));
       });
@@ -128,33 +123,39 @@ export const Home = () => {
   return (
     <div className="home-wrapper">
       {isError ? (
-        <></>
+        <>{/* TODO: Add Error Modal */}</>
       ) : (
         <section className="home-wrapper__container">
           <Nameplate />
           <SearchBar
             onRemoveOne={handleRemoveOneOnClick}
-            onFocus={handleOnFocus}
-            isOrderFull={isOrderFull}
+            onFocus={handleBackgroundFocus}
             orderList={orderList}
             onChange={handleInputChange}
             removeAllOrders={handleRemoveAllOrders}
             removeLastOrderItem={handleRemoveLastOrderItem}
+            resultType={resultType}
             onBuy={handleGetReceipt}
             value={input}
           />
-          <SearchResult
-            orderList={orderList}
-            isOrderFull={isOrderFull}
-            resultType={resultType}
-            results={filterData(searchResult, input)}
-            onSelected={handleItemSelected}
-            newMenuItem={handleNewMenuItem}
-            collapse={!isListOpen}
-          />
+          {resultType ? (
+            <SearchResult
+              orderList={orderList}
+              resultType={resultType}
+              results={filterData(searchResult, input)}
+              onSelected={handleItemSelected}
+              newMenuItem={handleNewMenuItem}
+              collapse={!isListOpen}
+            />
+          ) : (
+            <Reciept prices={prices} orderList={orderList} />
+          )}
+          <div
+            className="home-wrapper__background"
+            onClick={() => handleBackgroundFocus(false)}
+          ></div>
         </section>
       )}
-      <div className="home-wrapper__background" onClick={() => handleOnFocus(false)}></div>
     </div>
   );
 };

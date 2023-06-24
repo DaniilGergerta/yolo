@@ -6,7 +6,7 @@ export interface IOrderItem {
 }
 
 export interface IMenuItem {
-  value: number;
+  [key: string]: number;
 }
 
 export interface IReceipt {

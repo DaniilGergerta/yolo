@@ -1,6 +1,8 @@
+@import "styles/colors";
 @import "styles/media";
 
 .searchbar-wrapper {
+  z-index: 2;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -17,7 +19,7 @@
 
     &--text {
       margin-left: 3.25em;
-      color: #c5c5c5;
+      color: $--text--gray;
     }
 
     &--orderlist {

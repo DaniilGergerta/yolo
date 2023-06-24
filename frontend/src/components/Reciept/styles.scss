@@ -1,0 +1,5 @@
+@import "styles/dropdown";
+
+.reciept-wrapper {
+  @include dropdown-container;
+}

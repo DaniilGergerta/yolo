@@ -11,7 +11,6 @@ interface Props {
   resultType: TOrderType;
   onSelected: (item: string) => void;
   newMenuItem: () => void;
-  isOrderFull: boolean;
   collapse: boolean;
 }
 
@@ -21,11 +20,11 @@ const SearchResult: FC<Props> = ({
   resultType,
   onSelected,
   newMenuItem,
-  isOrderFull,
   collapse
 }) => {
   const dispatch = useAppDispatch();
   const { products } = useAppSelector((s) => s.products);
+
   const handleItemSelect = useCallback(
     (e: React.KeyboardEvent, item: string) => {
       if (e.key == "Enter" || e.key == "Space") {

@@ -9,7 +9,7 @@ import {
   useState
 } from "react";
 import CloseIcon from "../../assets/svgs/CloseIcon";
-import { IOrderItem } from "../../common/types";
+import { IOrderItem, TOrderType } from "../../common/types";
 import Item from "../Item";
 
 interface Props {
@@ -18,8 +18,8 @@ interface Props {
   removeAllOrders: () => void;
   removeLastOrderItem: () => void;
   value: string;
-  onBuy: (orderList: IOrderItem[]) => void;
-  isOrderFull: boolean;
+  onBuy: () => void;
+  resultType: TOrderType | undefined;
   onFocus: (value: boolean) => void;
   onRemoveOne: (id: number) => void;
 }
@@ -31,7 +31,7 @@ const SearchBar: FC<Props> = ({
   removeLastOrderItem,
   value,
   onBuy,
-  isOrderFull,
+  resultType,
   onFocus,
   onRemoveOne
 }) => {
@@ -58,9 +58,7 @@ const SearchBar: FC<Props> = ({
   return (
     <div className="searchbar-wrapper" onFocus={() => onFocus(true)} autoFocus>
       <section className="searchbar-wrapper__container">
-        {isOrderFull ? (
-          <p className="searchbar-wrapper__container--text">Reciept</p>
-        ) : (
+        {resultType ? (
           <>
             <div className="searchbar-wrapper__container--orderlist">
               {orderList.map((orderItem) => (
@@ -85,7 +83,7 @@ const SearchBar: FC<Props> = ({
               {orderList[0] && orderList[0].menuItem && (
                 <button
                   className="searchbar-wrapper__container--search-container--button--text"
-                  onClick={() => onBuy(orderList)}
+                  onClick={() => onBuy()}
                 >
                   buy
                 </button>
@@ -98,6 +96,8 @@ const SearchBar: FC<Props> = ({
               </button>
             </div>
           </>
+        ) : (
+          <p className="searchbar-wrapper__container--text">Reciept</p>
         )}
       </section>
     </div>
