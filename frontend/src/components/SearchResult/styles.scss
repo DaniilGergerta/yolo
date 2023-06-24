@@ -7,25 +7,36 @@
   width: 100%;
   margin: 0.5rem 0;
   padding: 0.5rem 0;
-  transition: height 100ms;
+  transition: opacity 100ms;
+  opacity: 1;
   border-radius: 0.2em;
   background-color: white;
   box-shadow: #A9A9A9 0 4px 8px 0;
+
+  &.collapse {
+    opacity: 0;
+  }
 
   &--item, &--no-results {
     display: inline-block;
     padding: 0.5em 1em;
     transition: background-color 100ms;
+  }
+
+  &--item {
+    &:not(.disabled) {
+      cursor: pointer;
+    }
 
     @include desktop {
-      &:hover, &:focus-visible {
+      &:not(.disabled):hover, &:not(.disabled):focus-visible {
         outline: none;
         background-color: #EEEEEE;
       }
     }
 
     @include mobile {
-      &:not(.and):active {
+      &:not(.disabled):not(.and):active {
         background-color: #A9A9A9;
       }
     }

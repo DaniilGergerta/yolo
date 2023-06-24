@@ -1,8 +1,7 @@
 import React, { FC, useCallback, useEffect } from "react";
 import "./styles.scss";
 import Item from "../Item";
-import { IOrderItem, IReceipt, TOrderType } from "../../common/types";
-import Order from "components/Order";
+import { IOrderItem, TOrderType } from "../../common/types";
 import { useAppDispatch, useAppSelector } from "store";
 import { setProducts } from "store/reducers/products";
 
@@ -12,7 +11,8 @@ interface Props {
   resultType: TOrderType;
   onSelected: (item: string) => void;
   newMenuItem: () => void;
-  isOrderFull: boolean
+  isOrderFull: boolean;
+  collapse: boolean;
 }
 
 const SearchResult: FC<Props> = ({
@@ -22,9 +22,10 @@ const SearchResult: FC<Props> = ({
   onSelected,
   newMenuItem,
   isOrderFull,
+  collapse
 }) => {
   const dispatch = useAppDispatch();
-  const { products } = useAppSelector(s => s.products)
+  const { products } = useAppSelector((s) => s.products);
   const handleItemSelect = useCallback(
     (e: React.KeyboardEvent, item: string) => {
       if (e.key == "Enter" || e.key == "Space") {
@@ -35,29 +36,42 @@ const SearchResult: FC<Props> = ({
   );
 
   useEffect(() => {
-    dispatch(setProducts(orderList))
+    dispatch(setProducts(orderList));
   }, [orderList]);
 
-  console.log('PRODUCTS', products);
-
   return (
-    <section
-      className="results-wrapper"
-    >
-      {results.map((item, index) => (
-        <div
-          key={index}
-          className="results-wrapper--item"
-          tabIndex={0}
-          onClick={() => onSelected(item)}
-          onKeyDown={(e) => handleItemSelect(e, item)}
-        >
-          <Item
-            type={resultType}
-            selected={item}
-          />
-        </div>
-      ))}
+    <section className={`results-wrapper ${collapse ? "collapse" : ""}`}>
+      {results.map((item, index) =>
+        resultType === "and" ? (
+          <div
+            key={index}
+            className={`results-wrapper--item ${
+              item.toLowerCase() !== "menu-item" ? "disabled" : ""
+            }`}
+            tabIndex={0}
+            onClick={item.toLowerCase() === "menu-item" ? () => onSelected(item) : undefined}
+            onKeyDown={(e) => handleItemSelect(e, item)}
+          >
+            <Item
+              type={item.toLowerCase()}
+              selected={undefined}
+              isWithColor
+              disabled={item.toLowerCase() !== "menu-item"}
+              showIcon={false}
+            />
+          </div>
+        ) : (
+          <div
+            key={index}
+            className="results-wrapper--item"
+            tabIndex={0}
+            onClick={() => onSelected(item)}
+            onKeyDown={(e) => handleItemSelect(e, item)}
+          >
+            <Item type={resultType} selected={item} />
+          </div>
+        )
+      )}
       {resultType == "ingredient" && (
         <div
           className="results-wrapper--item"
@@ -65,11 +79,7 @@ const SearchResult: FC<Props> = ({
           onClick={() => newMenuItem()}
           onKeyDown={(e) => handleItemSelect(e, undefined)}
         >
-          <Item
-            type={"and"}
-            isWithColor={true}
-            isOnList={true}
-          />
+          <Item type={"and"} isWithColor={true} isOnList={true} />
         </div>
       )}
       {!results.length && resultType != "ingredient" && (

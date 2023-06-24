@@ -11,7 +11,7 @@ const App = () => {
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/receipte" element={<Order />} />
+          <Route path="/receipt" element={<Order />} />
           <Route path="/" element={<Navigate to="/home" replace />} />
         </Route>
       </Routes>

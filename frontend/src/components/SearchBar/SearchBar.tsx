@@ -19,7 +19,7 @@ interface Props {
   removeLastOrderItem: () => void;
   value: string;
   onBuy: (orderList: IOrderItem[]) => void;
-  isOrderFull: boolean
+  isOrderFull: boolean;
   onFocus: (value: boolean) => void;
   onRemoveOne: (id: number) => void;
 }
@@ -33,7 +33,7 @@ const SearchBar: FC<Props> = ({
   onBuy,
   isOrderFull,
   onFocus,
-  onRemoveOne,
+  onRemoveOne
 }) => {
   const [input, setInput] = useState<string>("");
 
@@ -56,18 +56,10 @@ const SearchBar: FC<Props> = ({
   }, [value]);
 
   return (
-    <div
-      className="searchbar-wrapper"
-      onFocus={() => onFocus(true)}
-      autoFocus
-    >
+    <div className="searchbar-wrapper" onFocus={() => onFocus(true)} autoFocus>
       <section className="searchbar-wrapper__container">
         {isOrderFull ? (
-          <p
-            className="searchbar-wrapper__container--text"
-          >
-            Reciept
-          </p>
+          <p className="searchbar-wrapper__container--text">Reciept</p>
         ) : (
           <>
             <div className="searchbar-wrapper__container--orderlist">
@@ -90,16 +82,14 @@ const SearchBar: FC<Props> = ({
                 onKeyDown={handleKeyDown}
                 value={value}
               />
-              {
-                orderList[0].menuItem && (
-                  <button
-                    className="searchbar-wrapper__container--search-container--button--text"
-                    onClick={() => onBuy(orderList)}
-                  >
-                    buy
-                  </button>
-                )
-              }
+              {orderList[0] && orderList[0].menuItem && (
+                <button
+                  className="searchbar-wrapper__container--search-container--button--text"
+                  onClick={() => onBuy(orderList)}
+                >
+                  buy
+                </button>
+              )}
               <button
                 className="searchbar-wrapper__container--search-container--button"
                 onClick={removeAllOrders}
@@ -109,7 +99,6 @@ const SearchBar: FC<Props> = ({
             </div>
           </>
         )}
-
       </section>
     </div>
   );

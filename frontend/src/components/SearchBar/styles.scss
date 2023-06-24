@@ -16,8 +16,8 @@
     gap: 0.5em;
 
     &--text {
-      color: #c5c5c5;
       margin-left: 3.25em;
+      color: #c5c5c5;
     }
 
     &--orderlist {
@@ -56,6 +56,7 @@
 
     &--search-container {
       display: flex;
+      align-items: center;
       flex-direction: row;
       flex-grow: 1;
 
@@ -74,27 +75,33 @@
       }
 
       &--button {
-        cursor: pointer;
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: space-around;
-        width: 3.5em;
+        min-width: 3.5em;
         height: 3.5em;
+        cursor: pointer;
+        transition: all 300ms linear;
         border: none;
         background: none;
-        transition: all 300ms linear;
+
+        &:focus-visible {
+          border-radius: 50px;
+          outline: none;
+          background-color: #eedede;
+        }
 
         &--text {
-          cursor: pointer;
-          padding: 0 20px;
-          border-radius: 5px;
           align-self: center;
           height: 80%;
-          border: 1px solid #eedede;
-          background-color: white;
-          text-transform: uppercase;
+          padding: 0 20px;
+          cursor: pointer;
           transition: all 300ms ease-in-out;
+          text-transform: uppercase;
+          border: 1px solid #eedede;
+          border-radius: 5px;
+          background-color: white;
 
           &:hover {
             background-color: #88ca88dc;
@@ -102,8 +109,8 @@
         }
 
         &:hover {
-          background-color: #eedede;
           border-radius: 50px;
+          background-color: #eedede;
         }
 
         & > svg {

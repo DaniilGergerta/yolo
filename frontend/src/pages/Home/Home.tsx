@@ -5,21 +5,15 @@ import SearchResult from "../../components/SearchResult";
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
 import { useAppDispatch } from "store";
-import { setProducts } from "store/reducers/products";
-
-const initOrderList: IOrderItem = {
-  id: 0,
-  type: "menu-item"
-};
 
 export const Home = () => {
   const [isError, setError] = useState<boolean>(false);
-  const [orderList, setOrderList] = useState<IOrderItem[]>([initOrderList]);
+  const [orderList, setOrderList] = useState<IOrderItem[]>([]);
   const [input, setInput] = useState<string>("");
   const [isListOpen, setIsListOpen] = useState(true);
   const [searchResult, setSearchResult] = useState<string[]>([]);
   const [prices, setPrices] = useState<IMenuItem[] | null>(null);
-  const [resultType, setResultType] = useState<TOrderType>("menu-item");
+  const [resultType, setResultType] = useState<TOrderType>("and");
   const [isOrderFull, setIsOrderFull] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -30,92 +24,94 @@ export const Home = () => {
   const handleRemoveLastOrderItem = useCallback(() => {
     setOrderList((prevState): IOrderItem[] => {
       if (prevState.length > 1) {
-        prevState[prevState.length - 1].type === 'menu-item'
+        prevState[prevState.length - 1].type === "menu-item"
           ? setResultType("menu-item")
-          : setResultType("ingredient")
+          : setResultType("ingredient");
 
         return prevState.slice(0, -1);
       }
-      setResultType("menu-item")
-      return [initOrderList];
+      setResultType("menu-item");
+      return [];
     });
   }, [orderList]);
 
   const handleRemoveAllOrders = useCallback(() => {
-    setOrderList([initOrderList]);
-    setResultType("menu-item");
+    setOrderList([]);
+    setResultType("and");
   }, []);
 
   const handleItemSelected = useCallback(
     (item: string) => {
+      switch (resultType) {
+        case "menu-item":
+          setOrderList((prevState): IOrderItem[] => [
+            ...prevState.slice(0, -1),
+            { ...prevState.slice(-1)[0], menuItem: item }
+          ]);
+          setResultType("ingredient");
+          break;
+        case "ingredient":
+          setOrderList((prevState): IOrderItem[] => [
+            ...prevState,
+            {
+              id: prevState.length,
+              type: "ingredient",
+              menuItem: lastElement(orderList).menuItem,
+              ingredient: item
+            }
+          ]);
+          break;
+        case "and":
+          setOrderList((prevState): IOrderItem[] => [
+            ...prevState,
+            { id: prevState.length, type: "menu-item" }
+          ]);
+          setResultType("menu-item");
+          break;
+      }
       setInput("");
-      if (resultType === "menu-item") {
-        setOrderList((prevState): IOrderItem[] => [
-          ...prevState.slice(0, -1),
-          {
-            ...prevState.slice(-1)[0],
-            menuItem: item
-          }
-        ]);
-        setResultType("ingredient");
-      }
-      if (resultType === "ingredient") {
-        setOrderList((prevState): IOrderItem[] => [
-          ...prevState,
-          {
-            id: prevState.length,
-            type: "ingredient",
-            menuItem: lastElement(orderList).menuItem,
-            ingredient: item
-          }
-        ]);
-      }
     },
     [resultType, input]
   );
 
   const handleNewMenuItem = useCallback(() => {
-    setInput("");
-    console.log(orderList);
     setOrderList((prevState): IOrderItem[] => [
       ...prevState,
-      {
-        id: prevState.length,
-        type: "and"
-      },
-      {
-        id: prevState.length + 1,
-        type: "menu-item"
-      }
+      { id: prevState.length, type: "and" },
+      { id: prevState.length + 1, type: "menu-item" }
     ]);
     setResultType("menu-item");
+    setInput("");
   }, []);
 
   const handleGetReceipt = useCallback((finalOrder: IOrderItem[]) => {
-    setIsOrderFull(true)
-    console.log(finalOrder);
+    setSearchResult([]);
+    setIsOrderFull(true);
   }, []);
 
   const handleRemoveOneOnClick = useCallback((id: number) => {
-    setOrderList(prev => {
+    setOrderList((prev) => {
       if (prev.length > 1) {
-        return prev.filter(product => product.id !== id)
+        return prev.filter((product) => product.id !== id);
       }
-
-      setResultType("menu-item")
-      return [initOrderList];
+      setResultType("menu-item");
+      return [];
     });
-  }, [])
+  }, []);
 
-  const handleOnFocus = useCallback((value: boolean) => {
-    setIsListOpen(value)
-  }, [])
+  const handleOnFocus = useCallback(
+    (value: boolean) => {
+      if (!isOrderFull) {
+        setIsListOpen(value);
+      }
+    },
+    [isOrderFull]
+  );
 
   useEffect(() => {
     if (resultType === "menu-item") {
       fetchData<IMenuItem[]>("/menuitems", setError).then((data) => {
-        console.log(Object.values(data));
-        setSearchResult(Object.keys(data))
+        setSearchResult(Object.keys(data));
         setPrices(Object.values(data));
       });
     }
@@ -123,6 +119,9 @@ export const Home = () => {
       fetchData<string[]>(`/ingredients/${lastElement(orderList).menuItem}`, setError).then(
         (data) => setSearchResult(data)
       );
+    }
+    if (resultType === "and") {
+      fetchData<string[]>(`/`, setError).then((data) => setSearchResult(data));
     }
   }, [resultType]);
 
@@ -144,23 +143,18 @@ export const Home = () => {
             onBuy={handleGetReceipt}
             value={input}
           />
-          {isListOpen && (
-            <SearchResult
-              orderList={orderList}
-              isOrderFull={isOrderFull}
-              resultType={resultType}
-              results={filterData(searchResult, input)}
-              onSelected={handleItemSelected}
-              newMenuItem={handleNewMenuItem}
-            />
-          )}
+          <SearchResult
+            orderList={orderList}
+            isOrderFull={isOrderFull}
+            resultType={resultType}
+            results={filterData(searchResult, input)}
+            onSelected={handleItemSelected}
+            newMenuItem={handleNewMenuItem}
+            collapse={!isListOpen}
+          />
         </section>
       )}
-      <div
-        className="home-wrapper__background"
-        onClick={() => handleOnFocus(false)}
-      >
-      </div>
+      <div className="home-wrapper__background" onClick={() => handleOnFocus(false)}></div>
     </div>
   );
 };
