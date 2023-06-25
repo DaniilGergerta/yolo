@@ -80,6 +80,7 @@ export const Home = () => {
       { id: prevState.length, type: "and" },
       { id: prevState.length + 1, type: "menu-item" }
     ]);
+
     setResultType("menu-item");
     setInput("");
   }, []);
@@ -104,19 +105,21 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (resultType === "menu-item") {
-      fetchData<IMenuItem>("/menuitems", setError).then((data) => {
-        setSearchResult(Object.keys(data));
-        setPrices(Object.values(data));
-      });
-    }
-    if (resultType === "ingredient") {
-      fetchData<string[]>(`/ingredients/${lastElement(orderList).menuItem}`, setError).then(
-        (data) => setSearchResult(data)
-      );
-    }
-    if (resultType === "and") {
-      fetchData<string[]>(`/`, setError).then((data) => setSearchResult(data));
+    switch (resultType) {
+      case "menu-item":
+        fetchData<IMenuItem>("/menuitems", setError).then((data) => {
+          setSearchResult(Object.keys(data));
+          setPrices(Object.values(data));
+        });
+        break;
+      case "ingredient":
+        fetchData<string[]>(`/ingredients/${lastElement(orderList).menuItem}`, setError).then(
+          (data) => setSearchResult(data)
+        );
+        break;
+      case "and":
+        fetchData<string[]>(`/`, setError).then((data) => setSearchResult(data));
+        break;
     }
   }, [resultType]);
 
