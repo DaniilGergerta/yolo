@@ -12,11 +12,12 @@ const Order: FC = () => {
   const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
+    console.log(orderList);
     const { total, receipt } = getOrder(orderList);
 
     setTotal(total);
     setReceipt(receipt);
-  }, []);
+  }, [orderList]);
 
   return orderList.length ? (
     <section className="order-wrapper">

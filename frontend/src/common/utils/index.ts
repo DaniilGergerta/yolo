@@ -1,4 +1,4 @@
-import type { IReceipt, IOrderItem } from "common/types";
+import type { IReceipt, IOrderItem, IItem } from "common/types";
 import type { Dispatch, SetStateAction } from "react";
 
 export const fetchData = async <T>(
@@ -16,8 +16,11 @@ export const fetchData = async <T>(
   }
 };
 
-export const filterData = (searchResult: string[], input: string): string[] =>
-  searchResult.filter((key) => key.toLowerCase().includes(input.toLowerCase()));
+export const filterData = (searchResult: IItem[], input: string): IItem[] =>
+  searchResult.reduce(
+    (acc, item) => (item.item.toLowerCase().includes(input.toLowerCase()) ? [...acc, item] : acc),
+    []
+  );
 
 export const lastElement = <T>(array: T[]): T => array[array.length - 1];
 
@@ -29,16 +32,19 @@ export const getOrder = (orderList: IOrderItem[]): { total: number; receipt: IRe
       ? receipt.push({
           id: receipt.length + 1,
           name: orderItem.menuItem,
-          price: 10
+          price: orderItem.price
         })
       : orderItem.type === "ingredient"
       ? (receipt[
           receipt
             .map((order) => order.name === orderItem.menuItem && order.name)
             .lastIndexOf(orderItem.menuItem)
-        ].price += 10)
+        ].price += orderItem.price)
       : null
   );
 
-  return { total: receipt.reduce((acc, receiptItem) => acc + receiptItem.price, 10), receipt };
+  return {
+    total: receipt.reduce((acc, receiptItem) => acc + Number(receiptItem?.price), 0),
+    receipt
+  };
 };

@@ -3,10 +3,16 @@ export interface IOrderItem {
   type: TOrderType;
   menuItem?: string;
   ingredient?: string;
+  price: number;
 }
 
 export interface IMenuItem {
   [key: string]: number;
+}
+
+export interface IItem {
+  item: string;
+  price: number;
 }
 
 export interface IReceipt {

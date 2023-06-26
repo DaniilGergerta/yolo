@@ -1,7 +1,8 @@
-import "./styles.scss";
-import DotCircle from "../../assets/svgs/DotCircle";
 import { FC, memo } from "react";
-import { TOrderType } from "../../common/types";
+import DotCircle from "../../assets/svgs/DotCircle";
+import type { TOrderType } from "../../common/types";
+
+import "./styles.scss";
 
 interface Props {
   type: TOrderType | string;
@@ -24,7 +25,6 @@ const Item: FC<Props> = ({
   onRemoveOne,
   disabled
 }) => {
-  const isAnd = type === "and";
   return (
     <div className={`item-wrapper ${isWithColor && type}`} aria-disabled={disabled}>
       <span className="item-wrapper__text">
@@ -34,7 +34,7 @@ const Item: FC<Props> = ({
           ? `${selected}`
           : type}
       </span>
-      {showIcon && isAnd && isWithColor && !isOnList && (
+      {showIcon && type === "and" && isWithColor && !isOnList && (
         <div onClick={() => onRemoveOne(id)} className="item-wrapper__btn" aria-disabled={disabled}>
           <DotCircle />
         </div>

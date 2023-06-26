@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { FC, ChangeEvent } from "react";
-import type { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
+import type { IItem, IMenuItem, IOrderItem, TOrderType } from "../../common/types";
 
 import SearchBar from "../../components/SearchBar";
 import Nameplate from "../../components/Nameplate";
@@ -8,7 +9,6 @@ import SearchResult from "../../components/SearchResult";
 import { lastElement, fetchData, filterData } from "common/utils";
 
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
 
 const Home: FC = () => {
   const navigate = useNavigate();
@@ -16,8 +16,7 @@ const Home: FC = () => {
   const [orderList, setOrderList] = useState<IOrderItem[]>([]);
   const [input, setInput] = useState<string>("");
   const [isListOpen, setIsListOpen] = useState(false);
-  const [searchResult, setSearchResult] = useState<string[]>([]);
-  const [prices, setPrices] = useState<number[]>([]);
+  const [searchResult, setSearchResult] = useState<IItem[]>([]);
   const [resultType, setResultType] = useState<TOrderType>("and");
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -44,12 +43,12 @@ const Home: FC = () => {
   }, []);
 
   const handleItemSelected = useCallback(
-    (item: string) => {
+    (item: IItem) => {
       switch (resultType) {
         case "menu-item":
           setOrderList((prevState): IOrderItem[] => [
             ...prevState.slice(0, -1),
-            { ...prevState.slice(-1)[0], menuItem: item }
+            { ...prevState.slice(-1)[0], menuItem: item.item, price: item.price }
           ]);
           setResultType("ingredient");
           break;
@@ -60,14 +59,15 @@ const Home: FC = () => {
               id: prevState.length,
               type: "ingredient",
               menuItem: lastElement(orderList).menuItem,
-              ingredient: item
+              ingredient: item.item,
+              price: 0
             }
           ]);
           break;
         case "and":
           setOrderList((prevState): IOrderItem[] => [
             ...prevState,
-            { id: prevState.length, type: "menu-item" }
+            { id: prevState.length, type: "menu-item", price: 0 }
           ]);
           setResultType("menu-item");
           break;
@@ -80,8 +80,8 @@ const Home: FC = () => {
   const handleNewMenuItem = useCallback(() => {
     setOrderList((prevState): IOrderItem[] => [
       ...prevState,
-      { id: prevState.length, type: "and" },
-      { id: prevState.length + 1, type: "menu-item" }
+      { id: prevState.length, type: "and", price: 0 },
+      { id: prevState.length + 1, type: "menu-item", price: 0 }
     ]);
 
     setResultType("menu-item");
@@ -117,17 +117,20 @@ const Home: FC = () => {
       case "menu-item":
         fetchData<IMenuItem>("/menuitems", setError).then((data) => {
           console.log(data);
-          setSearchResult(Object.keys(data));
-          setPrices(Object.values(data));
+          setSearchResult(
+            Object.entries(data).reduce((acc, [item, price]) => [...acc, { item, price }], [])
+          );
         });
         break;
       case "ingredient":
         fetchData<string[]>(`/ingredients/${lastElement(orderList).menuItem}`, setError).then(
-          (data) => setSearchResult(data)
+          (data) => setSearchResult(data.reduce((acc, item) => [...acc, { item, price: 0 }], []))
         );
         break;
       case "and":
-        fetchData<string[]>(`/`, setError).then((data) => setSearchResult(data));
+        fetchData<string[]>(`/`, setError).then((data) =>
+          setSearchResult(data.reduce((acc, item) => [...acc, { item, price: 0 }], []))
+        );
         break;
     }
   }, [resultType]);

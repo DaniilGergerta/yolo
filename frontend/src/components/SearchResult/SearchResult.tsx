@@ -1,15 +1,16 @@
 import React, { FC, useCallback, useEffect } from "react";
 import Item from "../Item";
-import { IOrderItem, TOrderType } from "../../common/types";
-import { useAppDispatch, useAppSelector } from "store";
+import { useAppDispatch } from "store";
 import { setProducts } from "store/reducers/products";
+import type { IItem, IOrderItem, TOrderType } from "../../common/types";
+
 import "./styles.scss";
 
 interface Props {
   orderList: IOrderItem[];
-  results: string[];
+  results: IItem[];
   resultType: TOrderType;
-  onSelected: (item: string) => void;
+  onSelected: (item: IItem) => void;
   newMenuItem: () => void;
   collapse: boolean;
 }
@@ -23,10 +24,9 @@ const SearchResult: FC<Props> = ({
   collapse
 }) => {
   const dispatch = useAppDispatch();
-  const { products } = useAppSelector((s) => s.products);
 
   const handleItemSelect = useCallback(
-    (e: React.KeyboardEvent, item: string) => {
+    (e: React.KeyboardEvent, item: IItem) => {
       if (e.key == "Enter" || e.key == "Space") {
         item ? onSelected(item) : newMenuItem;
       }
@@ -45,17 +45,17 @@ const SearchResult: FC<Props> = ({
           <div
             key={index}
             className={`results-wrapper--item ${
-              item.toLowerCase() !== "menu-item" ? "disabled" : ""
+              item.item.toLowerCase() !== "menu-item" ? "disabled" : ""
             }`}
             tabIndex={0}
-            onClick={item.toLowerCase() === "menu-item" ? () => onSelected(item) : undefined}
+            onClick={item.item.toLowerCase() === "menu-item" ? () => onSelected(item) : undefined}
             onKeyDown={(e) => handleItemSelect(e, item)}
           >
             <Item
-              type={item.toLowerCase()}
+              type={item.item.toLowerCase()}
               selected={undefined}
               isWithColor
-              disabled={item.toLowerCase() !== "menu-item"}
+              disabled={item.item.toLowerCase() !== "menu-item"}
               showIcon={false}
             />
           </div>
@@ -67,7 +67,7 @@ const SearchResult: FC<Props> = ({
             onClick={() => onSelected(item)}
             onKeyDown={(e) => handleItemSelect(e, item)}
           >
-            <Item type={resultType} selected={item} />
+            <Item type={resultType} selected={item.item} />
           </div>
         )
       )}
@@ -87,4 +87,5 @@ const SearchResult: FC<Props> = ({
     </section>
   );
 };
+
 export default SearchResult;
