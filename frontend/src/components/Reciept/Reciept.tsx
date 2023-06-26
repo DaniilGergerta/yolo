@@ -1,6 +1,6 @@
-import "./styles.scss";
 import { FC, useEffect, useState } from "react";
 import { IOrderItem } from "../../common/types";
+import "./styles.scss";
 
 interface Props {
   prices: number[];

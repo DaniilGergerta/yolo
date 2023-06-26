@@ -1,6 +1,6 @@
 import "./styles.scss";
 import DotCircle from "../../assets/svgs/DotCircle";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { TOrderType } from "../../common/types";
 
 interface Props {
@@ -42,4 +42,5 @@ const Item: FC<Props> = ({
     </div>
   );
 };
-export default Item;
+
+export default memo(Item);

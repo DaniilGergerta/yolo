@@ -1,13 +1,16 @@
+import { useCallback, useEffect, useState } from "react";
+import type { FC, ChangeEvent } from "react";
+import type { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
+
 import SearchBar from "../../components/SearchBar";
 import Nameplate from "../../components/Nameplate";
-import "./styles.scss";
-import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
-import { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
-import { useAppDispatch } from "store";
 import SearchResult from "../../components/SearchResult";
 import Reciept from "../../components/Reciept";
+import { lastElement, fetchData, filterData } from "common/utils";
 
-export const Home = () => {
+import "./styles.scss";
+
+export const Home: FC = () => {
   const [isError, setError] = useState<boolean>(false);
   const [orderList, setOrderList] = useState<IOrderItem[]>([]);
   const [input, setInput] = useState<string>("");
@@ -15,7 +18,6 @@ export const Home = () => {
   const [searchResult, setSearchResult] = useState<string[]>([]);
   const [prices, setPrices] = useState<number[]>([]);
   const [resultType, setResultType] = useState<TOrderType>("and");
-  const dispatch = useAppDispatch();
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -104,6 +106,10 @@ export const Home = () => {
     setIsListOpen(value);
   }, []);
 
+  const handleFocusCancel = useCallback(() => {
+    handleBackgroundFocus(false);
+  }, []);
+
   useEffect(() => {
     switch (resultType) {
       case "menu-item":
@@ -153,32 +159,9 @@ export const Home = () => {
           ) : (
             <Reciept prices={prices} orderList={orderList} />
           )}
-          <div
-            className="home-wrapper__background"
-            onClick={() => handleBackgroundFocus(false)}
-          ></div>
+          <div className="home-wrapper__background" onClick={handleFocusCancel}></div>
         </section>
       )}
     </div>
   );
 };
-
-const fetchData = async <T,>(
-  endpoint: string,
-  errorCallback: Dispatch<SetStateAction<boolean>>
-): Promise<T> => {
-  try {
-    const response = await fetch("http://localhost:4000" + endpoint);
-    if (response.ok) {
-      return await response.json();
-    }
-    throw new Error();
-  } catch (e) {
-    errorCallback(true);
-  }
-};
-
-const filterData = (searchResult: string[], input: string): string[] =>
-  searchResult.filter((key) => key.toLowerCase().includes(input.toLowerCase()));
-
-const lastElement = <T,>(array: T[]): T => array[array.length - 1];

@@ -1,12 +1,16 @@
-import "./styles.scss";
+import { memo } from "react";
+import type { FC } from "react";
 import logo from "assets/images/logo.png";
 
-const Nameplate = () => {
+import "./styles.scss";
+
+const Nameplate: FC = () => {
   return (
     <div className="nameplate-wrapper">
       <img src={logo} alt="app logo" />
-      <span>YOLO</span>
+      <span>{"YOLO"}</span>
     </div>
   );
 };
-export default Nameplate;
+
+export default memo(Nameplate);

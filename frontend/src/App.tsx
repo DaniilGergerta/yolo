@@ -1,11 +1,14 @@
-import "./styles/colors.scss";
-import "./styles/styles.scss";
-import { Home } from "./pages/Home";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import type { FC } from "react";
+
+import { Home } from "./pages/Home";
 import RootLayout from "components/RootLayout";
 import Order from "components/Order";
 
-const App = () => {
+import "./styles/colors.scss";
+import "./styles/styles.scss";
+
+const App: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
