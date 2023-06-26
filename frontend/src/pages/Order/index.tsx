@@ -3,10 +3,10 @@ import { Navigate } from "react-router-dom";
 
 import { useAppSelector } from "../../store";
 import { getOrder } from "../../common/utils";
+import Nameplate from "../../components/Nameplate";
 import type { IReceipt } from "../../common/types";
 
 import "./styles.scss";
-import Nameplate from "components/Nameplate";
 
 const Order: FC = () => {
   const { products: orderList } = useAppSelector((store) => store.products);
@@ -38,7 +38,6 @@ const Order: FC = () => {
         </section>
       </section>
     </div>
-
   ) : (
     <Navigate to="/home" replace />
   );
