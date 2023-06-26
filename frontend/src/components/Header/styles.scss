@@ -14,6 +14,8 @@
   }
 
   section {
+    z-index: 2;
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 1em;
