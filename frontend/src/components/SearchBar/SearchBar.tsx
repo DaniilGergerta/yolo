@@ -6,7 +6,6 @@ import CloseIcon from "../../assets/svgs/CloseIcon";
 import Item from "../Item";
 
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   value: string;
@@ -32,7 +31,6 @@ const SearchBar: FC<Props> = ({
   onRemoveOne
 }) => {
   const [input, setInput] = useState<string>("");
-  const navigate = useNavigate();
 
   const handleBuy = useCallback(() => {
     onBuy();
