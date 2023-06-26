@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect } from "react";
-import "./styles.scss";
 import Item from "../Item";
 import { IOrderItem, TOrderType } from "../../common/types";
 import { useAppDispatch, useAppSelector } from "store";
 import { setProducts } from "store/reducers/products";
+import "./styles.scss";
 
 interface Props {
   orderList: IOrderItem[];

@@ -1,20 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import type { FC, ChangeEvent } from "react";
 import type { IMenuItem, IOrderItem, TOrderType } from "../../common/types";
 
 import SearchBar from "../../components/SearchBar";
 import Nameplate from "../../components/Nameplate";
 import SearchResult from "../../components/SearchResult";
-import Reciept from "../../components/Reciept";
 import { lastElement, fetchData, filterData } from "common/utils";
 
 import "./styles.scss";
+import { useNavigate } from "react-router-dom";
 
-export const Home: FC = () => {
+const Home: FC = () => {
+  const navigate = useNavigate();
   const [isError, setError] = useState<boolean>(false);
   const [orderList, setOrderList] = useState<IOrderItem[]>([]);
   const [input, setInput] = useState<string>("");
-  const [isListOpen, setIsListOpen] = useState(true);
+  const [isListOpen, setIsListOpen] = useState(false);
   const [searchResult, setSearchResult] = useState<string[]>([]);
   const [prices, setPrices] = useState<number[]>([]);
   const [resultType, setResultType] = useState<TOrderType>("and");
@@ -90,6 +91,7 @@ export const Home: FC = () => {
   const handleGetReceipt = useCallback(() => {
     setSearchResult([]);
     setResultType(undefined);
+    navigate("/receipt");
   }, []);
 
   const handleRemoveOneOnClick = useCallback((id: number) => {
@@ -114,6 +116,7 @@ export const Home: FC = () => {
     switch (resultType) {
       case "menu-item":
         fetchData<IMenuItem>("/menuitems", setError).then((data) => {
+          console.log(data);
           setSearchResult(Object.keys(data));
           setPrices(Object.values(data));
         });
@@ -147,7 +150,7 @@ export const Home: FC = () => {
             onBuy={handleGetReceipt}
             value={input}
           />
-          {resultType ? (
+          {!!resultType && (
             <SearchResult
               orderList={orderList}
               resultType={resultType}
@@ -156,8 +159,6 @@ export const Home: FC = () => {
               newMenuItem={handleNewMenuItem}
               collapse={!isListOpen}
             />
-          ) : (
-            <Reciept prices={prices} orderList={orderList} />
           )}
           <div className="home-wrapper__background" onClick={handleFocusCancel}></div>
         </section>
@@ -165,3 +166,5 @@ export const Home: FC = () => {
     </div>
   );
 };
+
+export default memo(Home);

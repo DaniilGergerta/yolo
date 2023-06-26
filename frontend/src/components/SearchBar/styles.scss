@@ -62,7 +62,7 @@
       flex-direction: row;
       flex-grow: 1;
 
-      & > input {
+      &>input {
         font-size: 1em;
         width: 100%;
         border: none;
@@ -70,10 +70,6 @@
         &:focus-visible {
           outline: none;
         }
-      }
-
-      @include mobile {
-        display: none;
       }
 
       &--button {
@@ -115,11 +111,11 @@
           background-color: #eedede;
         }
 
-        & > svg {
+        &>svg {
           width: 1.5em;
           height: 1.5em;
 
-          & > path {
+          &>path {
             fill: #ABABAB;
           }
         }

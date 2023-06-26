@@ -1,11 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import productsSlice from './reducers/products';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import productsSlice from "./reducers/products";
 
 const store = configureStore({
-	reducer: {
-    products: productsSlice,
-	}
+  reducer: {
+    products: productsSlice
+  }
 });
 
 export type AppDispatch = typeof store.dispatch;

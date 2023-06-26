@@ -6,6 +6,7 @@ import CloseIcon from "../../assets/svgs/CloseIcon";
 import Item from "../Item";
 
 import "./styles.scss";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   value: string;
@@ -31,16 +32,21 @@ const SearchBar: FC<Props> = ({
   onRemoveOne
 }) => {
   const [input, setInput] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleBuy = useCallback(() => {
+    onBuy();
+  }, [onBuy]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Backspace" && input.length === 0) {
         removeLastOrderItem();
       } else if (e.key === "Enter") {
-        onBuy();
+        handleBuy();
       }
     },
-    [input]
+    [input, handleBuy]
   );
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +87,7 @@ const SearchBar: FC<Props> = ({
               {orderList[0] && orderList[0].menuItem && (
                 <button
                   className="searchbar-wrapper__container--search-container--button--text"
-                  onClick={onBuy}
+                  onClick={handleBuy}
                 >
                   buy
                 </button>
