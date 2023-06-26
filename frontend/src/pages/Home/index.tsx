@@ -6,7 +6,7 @@ import type { IItem, IMenuItem, IOrderItem, TOrderType } from "../../common/type
 import SearchBar from "../../components/SearchBar";
 import Nameplate from "../../components/Nameplate";
 import SearchResult from "../../components/SearchResult";
-import { lastElement, fetchData, filterData } from "common/utils";
+import { lastElement, fetchData, filterData } from "../../common/utils";
 
 import "./styles.scss";
 

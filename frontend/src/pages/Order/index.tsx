@@ -1,8 +1,9 @@
 import { FC, memo, useEffect, useState } from "react";
-import { useAppSelector } from "store";
 import { Navigate } from "react-router-dom";
-import { getOrder } from "common/utils";
-import type { IReceipt } from "common/types";
+
+import { useAppSelector } from "../../store";
+import { getOrder } from "../../common/utils";
+import type { IReceipt } from "../../common/types";
 
 import "./styles.scss";
 import Nameplate from "components/Nameplate";

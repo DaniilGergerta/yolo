@@ -1,21 +1,23 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import type { FC } from "react";
-import logo from "../../assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 import "./styles.scss";
-import { useNavigate } from "react-router-dom";
 
 const Header: FC = () => {
   const navigate = useNavigate();
+
+  const handleClick = useCallback(() => {
+    () => navigate("/home");
+  }, []);
+
   return (
     <header className="header-wrapper">
-    <section
-      onClick={() => navigate('/home')}
-    >
-      <img src={logo} alt="App Logo" />
-      <span>{"YOLO"}</span>
-    </section>
-  </header>
+      <section onClick={handleClick}>
+        <img src={"/images/logo.png"} alt="App Logo" />
+        <span>{"YOLO"}</span>
+      </section>
+    </header>
   );
 };
 

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { ChangeEvent, ChangeEventHandler, FC, KeyboardEvent } from "react";
 import type { IOrderItem, TOrderType } from "../../common/types";
 
-import CloseIcon from "../../assets/svgs/CloseIcon";
+import CloseIcon from "../../common/svgs/CloseIcon.svg";
 import Item from "../Item";
 
 import "./styles.scss";

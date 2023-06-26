@@ -1,5 +1,5 @@
-@import "styles/media";
-@import "styles/dropdown";
+@import "../../styles/media";
+@import "../../styles/dropdown";
 
 .results-wrapper {
   @include dropdown-container;
@@ -8,7 +8,8 @@
     opacity: 0;
   }
 
-  &--item, &--no-results {
+  &--item,
+  &--no-results {
     display: inline-block;
     padding: 0.5em 1em;
     transition: background-color 100ms;
@@ -20,7 +21,9 @@
     }
 
     @include desktop {
-      &:not(.disabled):hover, &:not(.disabled):focus-visible {
+
+      &:not(.disabled):hover,
+      &:not(.disabled):focus-visible {
         outline: none;
         background-color: #EEEEEE;
       }
@@ -33,5 +36,3 @@
     }
   }
 }
-
-

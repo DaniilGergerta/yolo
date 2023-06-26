@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useEffect } from "react";
+
 import Item from "../Item";
-import { useAppDispatch } from "store";
-import { setProducts } from "store/reducers/products";
+import { useAppDispatch } from "../../store";
+import { setProducts } from "../../store/reducers/products";
 import type { IItem, IOrderItem, TOrderType } from "../../common/types";
 
 import "./styles.scss";

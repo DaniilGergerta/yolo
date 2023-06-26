@@ -2,13 +2,13 @@ import { Suspense, lazy } from "react";
 import type { FC } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import RootLayout from "components/RootLayout";
+import RootLayout from "../src/components/RootLayout";
 
 import "./styles/colors.scss";
 import "./styles/styles.scss";
 
-const Home = lazy(() => import("./pages/Home"));
-const Order = lazy(() => import("pages/Order"));
+const Home = lazy(() => import("../src/pages/Home"));
+const Order = lazy(() => import("../src/pages/Order"));
 
 const App: FC = () => {
   return (

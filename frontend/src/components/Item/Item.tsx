@@ -1,5 +1,5 @@
 import { FC, memo } from "react";
-import DotCircle from "../../assets/svgs/DotCircle";
+import DotCircle from "../../common/svgs/CloseIcon.svg";
 import type { TOrderType } from "../../common/types";
 
 import "./styles.scss";
